@@ -1,14 +1,18 @@
 package com.yml;
 
+import com.yml.CabInvoiceGenerator.RideType;
+
 public class Ride {
     int userID;
     int time;
     int distance;
+    RideType type;
 
-    Ride(int userID, int distance, int time) {
+    Ride(int userID, int distance, int time, RideType type) {
         this.userID = userID;
         this.time = time;
         this.distance = distance;
+        this.type = type;
     }
 
     public int getTime() {
