@@ -1,6 +1,5 @@
 package com.yml;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,18 +27,13 @@ public class CabInvoiceGenerator
         return cost;
     }
 
-    public List<Double> enhancedInvoice(List<Ride> rides) {
-        List<Double> result = new ArrayList<Double>();
+    public Invoice enhancedInvoice(List<Ride> rides) {
         double cost = 0;
         for (Ride ride : rides) {
             cost += generateFare(ride.distance, ride.time);
         }
 
-        result.add(Double.valueOf(rides.size()));
-        result.add(cost);
-        result.add(cost / rides.size());
-        
-        return result;
+        return new Invoice(rides.size(), cost, cost / rides.size());
     }
        
 }
