@@ -1,10 +1,12 @@
 package com.yml;
 
 public class Ride {
+    int userID;
     int time;
     int distance;
 
-    Ride(int distance,int time) {
+    Ride(int userID, int distance, int time) {
+        this.userID = userID;
         this.time = time;
         this.distance = distance;
     }
@@ -15,6 +17,14 @@ public class Ride {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public int getDistance() {
