@@ -18,25 +18,26 @@ public class CabInvoiceGenerator
         return cost > MIN_FARE ? cost : MIN_FARE;
     }
 
-    public double generateMultipleFare(Ride[] rides) {
+    public double generateMultipleFare(List<Ride> rides) {
         double cost = 0;
-        for (int i = 0; i < rides.length; i++) {
-            cost += generateFare(rides[i].distance, rides[i].time);
+
+        for (Ride ride : rides) {
+            cost += generateFare(ride.distance, ride.time);
         }
 
         return cost;
     }
 
-    public List<Double> enhancedInvoice(Ride[] rides) {
+    public List<Double> enhancedInvoice(List<Ride> rides) {
         List<Double> result = new ArrayList<Double>();
         double cost = 0;
-        for (int i = 0; i < rides.length; i++) {
-            cost += generateFare(rides[i].distance, rides[i].time);
+        for (Ride ride : rides) {
+            cost += generateFare(ride.distance, ride.time);
         }
 
-        result.add(Double.valueOf(rides.length));
+        result.add(Double.valueOf(rides.size()));
         result.add(cost);
-        result.add(cost / rides.length);
+        result.add(cost / rides.size());
         
         return result;
     }
