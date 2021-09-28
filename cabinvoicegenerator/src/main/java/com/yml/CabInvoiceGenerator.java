@@ -26,5 +26,19 @@ public class CabInvoiceGenerator
 
         return cost;
     }
+
+    public List<Double> enhancedInvoice(Ride[] rides) {
+        List<Double> result = new ArrayList<Double>();
+        double cost = 0;
+        for (int i = 0; i < rides.length; i++) {
+            cost += generateFare(rides[i].distance, rides[i].time);
+        }
+
+        result.add(Double.valueOf(rides.length));
+        result.add(cost);
+        result.add(cost / rides.length);
+        
+        return result;
+    }
        
 }
