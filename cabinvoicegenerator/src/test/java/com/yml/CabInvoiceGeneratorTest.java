@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.yml.CabInvoiceGenerator.RideType;
+
 import org.junit.Test;
 
 /**
@@ -21,7 +23,7 @@ public class CabInvoiceGeneratorTest
 
         int distance = 10; // in kms
         int time = 60; // in minutes
-        double calculatedFare = cabInvoiceGenerator.generateFare(distance, time);
+        double calculatedFare = cabInvoiceGenerator.generateFare(RideType.NORMAL,distance, time);
         double expectedFare = 160;
 
         assertEquals(expectedFare, calculatedFare, 0);
@@ -32,8 +34,8 @@ public class CabInvoiceGeneratorTest
         CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
 
         RideRepository rideRepository = new RideRepository();
-        rideRepository.addRide(new Ride(1,10, 60));
-        rideRepository.addRide(new Ride(1,20, 30));
+        rideRepository.addRide(new Ride(1,10, 60,RideType.NORMAL));
+        rideRepository.addRide(new Ride(1,20, 30,RideType.NORMAL));
 
         double aggregateFare = cabInvoiceGenerator.generateMultipleFare(rideRepository.getAllRides());
         double expectedAggregatedFare = 390;
@@ -46,8 +48,8 @@ public class CabInvoiceGeneratorTest
         CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
 
         RideRepository rideRepository = new RideRepository();
-        rideRepository.addRide(new Ride(1,10, 60));
-        rideRepository.addRide(new Ride(1,20, 30));
+        rideRepository.addRide(new Ride(1,10, 60, RideType.NORMAL));
+        rideRepository.addRide(new Ride(1,20, 30, RideType.NORMAL));
         Invoice invoice = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides());
         int expectedTotalRides = 2;
         double expectedTotalFare = 390;
@@ -63,21 +65,21 @@ public class CabInvoiceGeneratorTest
         CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
         RideRepository rideRepository = new RideRepository();
 
-        rideRepository.addRide(new Ride(1, 10, 60));
-        rideRepository.addRide(new Ride(2, 50, 30));
-        rideRepository.addRide(new Ride(1, 20, 50));
-        rideRepository.addRide(new Ride(2, 60, 40));
-        rideRepository.addRide(new Ride(1, 30, 40));
-        rideRepository.addRide(new Ride(2, 70, 50));
-        rideRepository.addRide(new Ride(1, 40, 30));
-        rideRepository.addRide(new Ride(2, 80, 60));
+        rideRepository.addRide(new Ride(1, 10, 60, RideType.NORMAL));
+        rideRepository.addRide(new Ride(2, 50, 30, RideType.NORMAL));
+        rideRepository.addRide(new Ride(1, 20, 50, RideType.PREMIUM));
+        rideRepository.addRide(new Ride(2, 60, 40, RideType.PREMIUM));
+        rideRepository.addRide(new Ride(1, 30, 40, RideType.NORMAL));
+        rideRepository.addRide(new Ride(2, 70, 50, RideType.NORMAL));
+        rideRepository.addRide(new Ride(1, 40, 30, RideType.PREMIUM));
+        rideRepository.addRide(new Ride(2, 80, 60, RideType.PREMIUM));
 
         //rides of user 1
         Invoice invoice = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides().stream()
                 .filter( ride -> ride.getUserID() == 1).collect(Collectors.toList()));
         int expectedTotalRides = 4;
-        double expectedTotalFare = 1180;
-        double expectedAverageFare = 295;
+        double expectedTotalFare = 1560;
+        double expectedAverageFare = 390;
 
         assertEquals(expectedTotalRides, invoice.getTotalRides(), 0);
         assertEquals(expectedTotalFare, invoice.getTotalFare(), 0);
@@ -87,8 +89,8 @@ public class CabInvoiceGeneratorTest
         invoice = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides().stream()
                 .filter( ride -> ride.getUserID() == 2).collect(Collectors.toList()));
         expectedTotalRides = 4;
-        expectedTotalFare = 2780;
-        expectedAverageFare = 695;
+        expectedTotalFare = 3580;
+        expectedAverageFare = 895;
 
         assertEquals(expectedTotalRides, invoice.getTotalRides(), 0);
         assertEquals(expectedTotalFare, invoice.getTotalFare(), 0);

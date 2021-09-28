@@ -8,20 +8,36 @@ import java.util.List;
  */
 public class CabInvoiceGenerator 
 {
-    private final int MIN_FARE = 5;
+    enum RideType {
+        NORMAL, PREMIUM
+    };
 
-    public double generateFare(int distance, int time) {
-        double cost = distance * 10;
-        cost += time * 1;
+    private final int NORMAL_MIN_FARE = 5;
+    private final int PREMIUM_MIN_FARE = 20;
+    private final int NORMAL_FARE_PER_KM = 10;
+    private final int PREMIUM_FARE_PER_KM = 15;
+    private final int NORMAL_FARE_PER_MIN = 1;
+    private final int PREMIUM_FARE_PER_MIN = 2;
 
-        return cost > MIN_FARE ? cost : MIN_FARE;
+
+    public double generateFare(RideType typeOfRide, int distance, int time) {
+        if (typeOfRide == RideType.NORMAL) {
+            double cost = distance * NORMAL_FARE_PER_KM;
+            cost += time * NORMAL_FARE_PER_MIN;
+            return cost > NORMAL_MIN_FARE ? cost : NORMAL_MIN_FARE;
+        }
+        else {
+            double cost = distance * PREMIUM_FARE_PER_KM;
+            cost += time * PREMIUM_FARE_PER_MIN;
+            return cost > PREMIUM_MIN_FARE ? cost : PREMIUM_MIN_FARE;
+        }
     }
 
     public double generateMultipleFare(List<Ride> rides) {
         double cost = 0;
 
         for (Ride ride : rides) {
-            cost += generateFare(ride.distance, ride.time);
+            cost += generateFare(ride.type, ride.distance, ride.time);
         }
 
         return cost;
@@ -30,7 +46,7 @@ public class CabInvoiceGenerator
     public Invoice enhancedInvoice(List<Ride> rides) {
         double cost = 0;
         for (Ride ride : rides) {
-            cost += generateFare(ride.distance, ride.time);
+            cost += generateFare(ride.type, ride.distance, ride.time);
         }
 
         return new Invoice(rides.size(), cost, cost / rides.size());
