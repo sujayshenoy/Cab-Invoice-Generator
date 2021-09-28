@@ -1,6 +1,6 @@
 package com.yml;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -13,8 +13,15 @@ public class CabInvoiceGeneratorTest
      * Rigorous Test :-)
      */
     @Test
-    public void shouldAnswerWithTrue()
+    public void calculatedFareShouldMatchExpected()
     {
-        assertTrue( true );
+        CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
+
+        int distance = 10; // in kms
+        int time = 60;  // in minutes
+        double calculatedFare = cabInvoiceGenerator.generateFare(distance, time);
+        double expectedFare = 160;
+
+        assertEquals(expectedFare, calculatedFare, 0);
     }
 }
