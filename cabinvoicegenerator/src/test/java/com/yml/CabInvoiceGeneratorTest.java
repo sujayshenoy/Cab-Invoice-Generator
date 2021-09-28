@@ -44,55 +44,15 @@ public class CabInvoiceGeneratorTest
     @Test
     public void calculateTotalRidesTotalFareAverageFareMatchExpected() {
         CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
-        RideRepository rideRepository = new RideRepository();
 
-        rideRepository.addRide(new Ride(1, 10, 60));
-        rideRepository.addRide(new Ride(1, 20, 30));
-        List<Double> result = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides());
+        Ride[] rides = { new Ride(1,10, 60), new Ride(1,20, 30) };
+        Invoice invoice = cabInvoiceGenerator.enhancedInvoice(rides);
         int expectedTotalRides = 2;
         double expectedTotalFare = 390;
         double expectedAverageFare = 195;
 
-        assertEquals(expectedTotalRides, result.get(0), 0);
-        assertEquals(expectedTotalFare, result.get(1), 0);
-        assertEquals(expectedAverageFare, result.get(2), 0);
-    }
-    
-    @Test
-    public void calculateInvoiceOfMultipleUsersMatchExpected() {
-        CabInvoiceGenerator cabInvoiceGenerator = new CabInvoiceGenerator();
-        RideRepository rideRepository = new RideRepository();
-
-        rideRepository.addRide(new Ride(1, 10, 60));
-        rideRepository.addRide(new Ride(2, 50, 30));
-        rideRepository.addRide(new Ride(1, 20, 50));
-        rideRepository.addRide(new Ride(2, 60, 40));
-        rideRepository.addRide(new Ride(1, 30, 40));
-        rideRepository.addRide(new Ride(2, 70, 50));
-        rideRepository.addRide(new Ride(1, 40, 30));
-        rideRepository.addRide(new Ride(2, 80, 60));
-
-        //rides of user 1
-        List<Double> result = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides().stream()
-                .filter( ride -> ride.getUserID() == 1).collect(Collectors.toList()));
-        int expectedTotalRides = 4;
-        double expectedTotalFare = 1180;
-        double expectedAverageFare = 295;
-
-        assertEquals(expectedTotalRides, result.get(0), 0);
-        assertEquals(expectedTotalFare, result.get(1), 0);
-        assertEquals(expectedAverageFare, result.get(2), 0);
-
-        //rides of user 2
-        result = cabInvoiceGenerator.enhancedInvoice(rideRepository.getAllRides().stream()
-                .filter( ride -> ride.getUserID() == 2).collect(Collectors.toList()));
-        expectedTotalRides = 4;
-        expectedTotalFare = 2780;
-        expectedAverageFare = 695;
-
-        assertEquals(expectedTotalRides, result.get(0), 0);
-        assertEquals(expectedTotalFare, result.get(1), 0);
-        assertEquals(expectedAverageFare, result.get(2), 0);
-
+        assertEquals(expectedTotalRides, invoice.getTotalRides(),0);
+        assertEquals(expectedTotalFare, invoice.getTotalFare(),0);
+        assertEquals(expectedAverageFare, invoice.getAverageFare(),0);
     }
 }
